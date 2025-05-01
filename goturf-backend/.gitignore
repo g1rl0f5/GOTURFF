@@ -1,0 +1,71 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Debug folders
+.vscode/
+.idea/
+
+# Cache
+.cache/
+dist/
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Coverage directory
+coverage/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment variables
+.env
+
+# Logs
+logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Cache
+.cache/
+
+# Debug folders
+.vscode/
+.idea/
+
+# Coverage directory
+coverage/

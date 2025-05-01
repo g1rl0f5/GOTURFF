@@ -1,0 +1,137 @@
+.details-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.back-button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.welcome-text {
+  font-size: 18px;
+  color: #333;
+}
+
+.turf-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.turf-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.details-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.field {
+  margin-bottom: 20px;
+}
+
+.field-label {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.field-value {
+  font-size: 16px;
+  color: #555;
+}
+
+.sports-list, .amenities-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sports-list li, .amenities-list li {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.book-button {
+  padding: 12px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.booking-form {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+  margin-bottom: 20px;
+}
+
+.form-section label {
+  font-size: 16px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-section input, .form-section select, .form-section textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.confirm-button {
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.confirm-button:hover {
+  opacity: 0.9;
+}
+.amenities-inline {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #444;
+}
+
+.amenity-item {
+  white-space: nowrap;
+}
+
+.separator {
+  margin: 0 6px;
+  color: #999;
+}

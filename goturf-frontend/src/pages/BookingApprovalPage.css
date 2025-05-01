@@ -1,0 +1,119 @@
+.booking-grid-container {
+    padding: 30px;
+    background-color: #f7f7f7;
+    min-height: 100vh;
+  }
+  
+  .booking-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+  
+  .no-bookings {
+    text-align: center;
+    font-size: 16px;
+    color: #777;
+  }
+  
+  .booking-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  
+  .booking-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .card-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .card-header p {
+    margin: 4px 0 12px;
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .card-body p {
+    margin: 6px 0;
+    font-size: 14px;
+    color: #444;
+  }
+  
+  .card-footer {
+    margin-top: 15px;
+  }
+  
+  .status {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .status.approved {
+    color: green;
+  }
+  
+  .status.rejected {
+    color: red;
+  }
+  
+  .status.pending {
+    color: #e69500;
+  }
+  
+  .card-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .approve-btn,
+  .reject-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .approve-btn {
+    background-color: #28a745;
+  }
+  
+  .approve-btn:hover {
+    background-color: #218838;
+  }
+  
+  .reject-btn {
+    background-color: #dc3545;
+  }
+  
+  .reject-btn:hover {
+    background-color: #c82333;
+  }
+  
+  .filters-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  
+  .filters-container select {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
