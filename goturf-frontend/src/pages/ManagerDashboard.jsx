@@ -47,7 +47,7 @@ const ManagerDashboard = () => {
 
       <div className="manager-buttons">
         <button onClick={() => navigate('/add-turf')}>➕ Add New Turf</button>
-        <button onClick={() => navigate('/manager/edit-turf')}>📋 Manage Your Turfs</button>
+        <button onClick={() => navigate(`/manager/edit-turf/${turf._id}`)}>📋 Manage Your Turfs</button>
         <button onClick={() => navigate('/manager/bookings')}>📅 Booking Approvals</button>
         <button onClick={() => navigate('/manager/slots')}>🕒 Manage Slots</button>
       </div>
