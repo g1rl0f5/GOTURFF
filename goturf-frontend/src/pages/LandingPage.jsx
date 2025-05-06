@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./LandingPage.css";
 
+const BACKEND_URL = "https://goturff.onrender.com";
+
+
 const LandingPage = () => {
   const navigate = useNavigate();
   const [turfs, setTurfs] = useState([]);
@@ -13,7 +16,7 @@ const LandingPage = () => {
     setIsLoggedIn(!!token);
 
     axios
-      .get("http://localhost:5000/api/public/approved-turfs")
+      .get(`${BACKEND_URL}/api/public/approved-turfs`)
       .then((res) => setTurfs(res.data))
       .catch((err) => console.error("Error fetching turfs", err));
   }, []);
@@ -60,7 +63,7 @@ const LandingPage = () => {
           ) : (
             turfs.map((turf) => (
               <div key={turf._id} className="turf-card">
-                <img src={`http://localhost:5000/uploads/${turf.photo}`} alt={turf.name} className="turf-image" />
+                <img src={`${BACKEND_URL}/uploads/${turf.photo}`} alt={turf.name} className="turf-image" />
                 <div className="card-content">
                   <h3 className="turf-name">{turf.name}</h3>
                   <p className="turf-location">{turf.location}</p>

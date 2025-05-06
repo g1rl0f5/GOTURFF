@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const BACKEND_URL = "https://goturff.onrender.com";
+
+
 const ManagerProfilePage = () => {
   const [profile, setProfile] = useState(null);
 
@@ -8,7 +11,7 @@ const ManagerProfilePage = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/users/me', {
+        const response = await axios.get('${BACKEND_URL}/api/users/me', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const BACKEND_URL = "https://goturff.onrender.com";
+
 const AllTurfsPage = () => {
   const [turfs, setTurfs] = useState([]);
   const navigate = useNavigate();
@@ -9,7 +11,7 @@ const AllTurfsPage = () => {
   useEffect(() => {
     const fetchTurfs = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/turfs", {
+        const res = await axios.get(`${BACKEND_URL}/api/turfs`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -40,7 +42,7 @@ const AllTurfsPage = () => {
             className="border rounded-lg overflow-hidden shadow-md bg-white"
           >
             <img
-              src={`http://localhost:5000/uploads/${turf.photo}`}
+              src={`${BACKEND_URL}/uploads/${turf.photo}`}
               alt={turf.name}
               className="w-full h-48 object-cover"
             />

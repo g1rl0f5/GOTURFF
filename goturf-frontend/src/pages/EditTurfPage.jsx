@@ -3,6 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './EditTurfPage.css';
 
+const BACKEND_URL = "https://goturff.onrender.com";
+
+
 const EditTurfPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -20,7 +23,7 @@ const EditTurfPage = () => {
   useEffect(() => {
     const fetchTurf = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/turfs/${id}`);
+        const res = await axios.get(`${BACKEND_URL}/api/turfs/${id}`);
         const turf = res.data;
         setFormData({
           name: turf.name,
@@ -58,7 +61,7 @@ const EditTurfPage = () => {
     }
 
     try {
-      await axios.put(`http://localhost:5000/api/manager/edit-turf/${id}`, data, {
+      await axios.put(`${BACKEND_URL}/api/manager/edit-turf/${id}`, data, {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
       });
       setSuccessMessage('✅ Turf updated successfully!');

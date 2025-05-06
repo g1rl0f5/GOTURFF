@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './AdminDashboardPage.css'; // Your existing CSS file
 
+const BACKEND_URL = "https://goturff.onrender.com";
+
 const AdminDashboardPage = () => {
   const [pendingTurfs, setPendingTurfs] = useState([]);
   const [users, setUsers] = useState([]);
@@ -15,13 +17,13 @@ const AdminDashboardPage = () => {
     const fetchData = async () => {
       try {
         const [pendingRes, usersRes, allTurfsRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/admin/pending-turfs', {
+          axios.get(`${BACKEND_URL}/api/admin/pending-turfs`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get('http://localhost:5000/api/admin/all-users', {
+          axios.get(`${BACKEND_URL}/api/admin/all-users`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get('http://localhost:5000/api/admin/all-turfs', {
+          axios.get(`${BACKEND_URL}/api/admin/all-turfs`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -39,7 +41,7 @@ const AdminDashboardPage = () => {
 
   const approveTurf = async (id) => {
     try {
-      await axios.patch(`http://localhost:5000/api/admin/approve-turf/${id}`, {}, {
+      await axios.patch(`${BACKEND_URL}/api/admin/approve-turf/${id}`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setPendingTurfs(prev => prev.filter(turf => turf._id !== id));
@@ -50,7 +52,7 @@ const AdminDashboardPage = () => {
 
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/admin/delete-user/${id}`, {
+      await axios.delete(`${BACKEND_URL}/api/admin/delete-user/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(prev => prev.filter(user => user._id !== id));
@@ -61,7 +63,7 @@ const AdminDashboardPage = () => {
 
   const deleteTurf = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/admin/delete-turf/${id}`, {
+      await axios.delete(`${BACKEND_URL}/api/admin/delete-turf/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAllTurfs(prev => prev.filter(turf => turf._id !== id));

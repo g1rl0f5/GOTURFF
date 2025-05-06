@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './BookingApprovalPage.css';
 
+
+const BACKEND_URL = "https://goturff.onrender.com";
+
 const BookingApprovalPage = () => {
   const [bookings, setBookings] = useState([]);
   const [statusFilter, setStatusFilter] = useState('all');
@@ -11,7 +14,7 @@ const BookingApprovalPage = () => {
     const fetchBookings = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/manager/bookings', {
+        const res = await axios.get(`${BACKEND_URL}/api/manager/bookings`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setBookings(res.data);
@@ -26,7 +29,7 @@ const BookingApprovalPage = () => {
   const handleApproval = async (bookingId, newStatus) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/manager/bookings/${bookingId}/approve`,
+        `${BACKEND_URL}/api/manager/bookings/${bookingId}/approve`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );

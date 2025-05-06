@@ -1,41 +1,54 @@
-
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+/* Navbar */
+body.light .navbar {
+  background-color: #ffffff;
+  color: #000;
 }
 
-body {
-  background-color: #f9f9f9;
-  color: #333;
-}
-/* index.css */
-body.light {
-  background-color: #f2f2f2;
-  color: #333;
+body.dark .navbar {
+  background-color: #1a1a1a;
+  color: #fff;
 }
 
-body.dark {
-  background-color: #121212;
+/* Footer */
+body.light .footer {
+  background-color: #eaeaea;
+  color: #000;
+}
+
+body.dark .footer {
+  background-color: #1a1a1a;
   color: #f5f5f5;
 }
 
-.primary-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin: 5px;
+/* Card content */
+body.light .card-content {
+  background-color: #ffffff;
+  color: #000;
 }
 
-body.light .primary-button {
+body.dark .card-content {
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+}
+
+/* Buttons */
+body.light .btn {
   background-color: #007bff;
   color: white;
 }
 
-body.dark .primary-button {
+body.dark .btn {
   background-color: #1e88e5;
   color: white;
+}
+
+/* Hero Section */
+body.light .hero {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+body.dark .hero {
+  background-color: #1a1a1a;
+  color: #f5f5f5;
 }

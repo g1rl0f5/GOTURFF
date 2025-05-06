@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ManagerDashboard.css';
 
+const BACKEND_URL = "https://goturff.onrender.com";
+
+
 const ManagerDashboard = () => {
   const navigate = useNavigate();
   const [turfs, setTurfs] = useState([]);
@@ -21,7 +24,7 @@ const ManagerDashboard = () => {
     const fetchTurfs = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/manager/my-turfs', {
+        const res = await axios.get(`${BACKEND_URL}/api/manager/my-turfs`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setTurfs(res.data);
@@ -66,7 +69,7 @@ const ManagerDashboard = () => {
                 <p><strong>Status:</strong> {turf.isApproved ? '✅ Approved' : '⌛ Pending Approval'}</p>
                 {turf.photo && (
                   <img
-                    src={`http://localhost:5000/uploads/${turf.photo}`}
+                    src={`${BACKEND_URL}/uploads/${turf.photo}`}
                     alt="Turf"
                     className="turf-image"
                   />

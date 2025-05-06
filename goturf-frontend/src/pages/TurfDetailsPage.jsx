@@ -3,6 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./TurfDetailsPage.css";
 
+const BACKEND_URL = "https://goturff.onrender.com";
+
+
 const TurfDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -22,7 +25,7 @@ const TurfDetailsPage = () => {
     const fetchTurf = async () => {
       try {
         const token = localStorage.getItem("token");
-        const turfRes = await axios.get(`http://localhost:5000/api/turfs/${id}`, {
+        const turfRes = await axios.get(`${BACKEND_URL}/api/turfs/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setTurf(turfRes.data);
@@ -51,7 +54,7 @@ const TurfDetailsPage = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        `http://localhost:5000/api/bookings/${turf._id}`,
+        `${BACKEND_URL}/api/bookings/${turf._id}`,
         bookingData,
         {
           headers: {
@@ -81,7 +84,7 @@ const TurfDetailsPage = () => {
 
       <h1 className="turf-title">{turf.name}</h1>
       <img
-        src={`http://localhost:5000/uploads/${turf.photo}`}
+        src={`${BACKEND_URL}/uploads/${turf.photo}`}
         alt={turf.name}
         className="turf-image"
       />

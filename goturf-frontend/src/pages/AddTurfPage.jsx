@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './AddTurfPage.css';
 
+const BACKEND_URL = "https://goturff.onrender.com";
+
+
 const AddTurfPage = () => {
   const navigate = useNavigate();
   const [turfData, setTurfData] = useState({
@@ -66,7 +69,7 @@ const AddTurfPage = () => {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/manager/add-turf', formData, {
+      await axios.post(`${BACKEND_URL}/api/manager/add-turf`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

@@ -7,6 +7,9 @@ import { Elements, CardElement, useStripe, useElements } from '@stripe/react-str
 import axios from 'axios';
 import './PaymentPage.css'; 
 
+const BACKEND_URL = "https://goturff.onrender.com";
+
+
 const stripePromise = loadStripe('pk_test_51RItdQ2cvcZB0KBYX2b724zFZwHepEmPzl0FS6VNywclJA2w34upZkDXokwiEC6iuCbIVuVX3QotjxSNuQZh1NND00ocgrHSl5');
 
 const CheckoutForm = ({ clientSecret, bookingAmount }) => {
@@ -53,7 +56,7 @@ const PaymentPage = () => {
     const fetchPaymentIntent = async () => {
       const token = localStorage.getItem('token');
       const res = await axios.post(
-        `http://localhost:5000/api/payments/create-payment-intent/${bookingId}`,
+        `${BACKEND_URL}/api/payments/create-payment-intent/${bookingId}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
