@@ -11,7 +11,7 @@ const ManagerProfilePage = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('${BACKEND_URL}/api/users/me', {
+        const response = await axios.get(`${BACKEND_URL}/api/users/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
