@@ -7,16 +7,11 @@ const connectDB = require('./db');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to the database
 connectDB();
 
-// CORS Configuration (✅ only allow your frontend domains)
-// app.use(cors({
-//   origin: ['https://goturff.vercel.app', 'https://goturff-g1rl0f5s-projects.vercel.app'],
-//   credentials: true,
-// }));
+
 app.use(cors({
-  origin: [ 'http://localhost:5173/', 'https://goturff-g1rl0f5s-projects.vercel.app'],
+  origin: [ 'http://localhost:5173/' , 'https://goturff-g1rl0f5s-projects.vercel.app','https://goturff.vercel.app'],
   credentials: true,
 }));
 // Middleware
