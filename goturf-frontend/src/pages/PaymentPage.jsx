@@ -1,79 +1,106 @@
-
-
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import './PaymentPage.css'; 
+import './PaymentPage.css';
 
 const BACKEND_URL = "https://goturff.onrender.com";
 
+const PaymentPage = () => {
+  const { bookingId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('');
 
-const stripePromise = loadStripe('pk_test_51RItdQ2cvcZB0KBYX2b724zFZwHepEmPzl0FS6VNywclJA2w34upZkDXokwiEC6iuCbIVuVX3QotjxSNuQZh1NND00ocgrHSl5');
+  const queryParams = new URLSearchParams(location.search);
+  const status = queryParams.get('status');
 
-const CheckoutForm = ({ clientSecret, bookingAmount }) => {
-  const stripe = useStripe();
-  const elements = useElements();
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!stripe || !elements) return;
-
-    const result = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-      },
-    });
-
-    if (result.error) {
-      console.error(result.error.message);
-    } else {
-      if (result.paymentIntent.status === 'succeeded') {
-        alert('Payment Successful!');
-       
-      }
+  const handleCheckout = async () => {
+    if (!paymentMethod) {
+      alert('Please select a payment method');
+      return;
     }
+    setLoading(true);
+    const token = localStorage.getItem('token');
+    try {
+      const res = await axios.post(
+        `${BACKEND_URL}/api/payments/initiate-payment/${bookingId}`,
+        { paymentMethod },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (paymentMethod === 'Cash') {
+        alert('Booking confirmed with cash. You can view it in your bookings.');
+        navigate('/my-bookings');
+      } else {
+        window.location.href = res.data.url;
+      }
+    } catch (error) {
+      console.error('Payment failed:', error);
+      alert('Failed to initiate payment');
+    }
+    setLoading(false);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="payment-form">
-      <CardElement className="stripe-card-element" />
-      <button type="submit" disabled={!stripe} className="payment-button">
-        Pay ₹{(bookingAmount / 100).toFixed(2)}
-      </button>
-    </form>
-  );
-};
-
-const PaymentPage = () => {
-  const { bookingId } = useParams();
-  const [clientSecret, setClientSecret] = useState('');
-  const [bookingAmount, setBookingAmount] = useState(0);
-
-  useEffect(() => {
-    const fetchPaymentIntent = async () => {
-      const token = localStorage.getItem('token');
-      const res = await axios.post(
-        `${BACKEND_URL}/api/payments/create-payment-intent/${bookingId}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setClientSecret(res.data.clientSecret);
-      setBookingAmount(res.data.amount);
-    };
-
-    fetchPaymentIntent();
-  }, [bookingId]);
-
-  return (
     <div className="payment-container">
-      <h1 className="payment-title">Stripe Payment</h1>
-      {clientSecret && (
-        <Elements stripe={stripePromise}>
-          <CheckoutForm clientSecret={clientSecret} bookingAmount={bookingAmount} />
-        </Elements>
+      {status === 'success' ? (
+        <>
+          <h1 className="payment-title">Payment Successful!</h1>
+          <p>Your turf has been booked successfully. 🎉</p>
+        </>
+      ) : status === 'cancelled' ? (
+        <>
+          <h1 className="payment-title">Payment Cancelled</h1>
+          <p>Payment was not completed. You can try again later.</p>
+        </>
+      ) : (
+        <>
+          <h1 className="payment-title">Proceed to Payment</h1>
+          <div className="payment-methods">
+            <label>
+              <input
+                type="radio"
+                value="UPI"
+                checked={paymentMethod === 'UPI'}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />{' '}
+              UPI
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="Credit Card"
+                checked={paymentMethod === 'Credit Card'}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />{' '}
+              Credit Card
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="Debit Card"
+                checked={paymentMethod === 'Debit Card'}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />{' '}
+              Debit Card
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="Cash"
+                checked={paymentMethod === 'Cash'}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />{' '}
+              Cash at Venue
+            </label>
+          </div>
+          <button onClick={handleCheckout} className="payment-button" disabled={loading}>
+            {loading ? 'Processing...' : 'Pay Now'}
+          </button>
+        </>
       )}
     </div>
   );
@@ -93,86 +120,88 @@ export default PaymentPage;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // import React, { useEffect, useState } from 'react';
-// import { useParams } from 'react-router-dom';
-// import { loadStripe } from '@stripe/stripe-js';
-// import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+// import { useParams, useNavigate, useLocation } from 'react-router-dom';
 // import axios from 'axios';
+// import './PaymentPage.css';
 
-// const stripePromise = loadStripe('pk_test_51RItdQ2cvcZB0KBYX2b724zFZwHepEmPzl0FS6VNywclJA2w34upZkDXokwiEC6iuCbIVuVX3QotjxSNuQZh1NND00ocgrHSl5'); // 🔥 Your PUBLISHABLE KEY from Stripe dashboard
-
-// const CheckoutForm = ({ clientSecret, bookingAmount }) => {
-//   const stripe = useStripe();
-//   const elements = useElements();
-
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-
-//     if (!stripe || !elements) return;
-
-//     const result = await stripe.confirmCardPayment(clientSecret, {
-//       payment_method: {
-//         card: elements.getElement(CardElement),
-//       },
-//     });
-
-//     if (result.error) {
-//       console.error(result.error.message);
-//     } else {
-//       if (result.paymentIntent.status === 'succeeded') {
-//         alert('Payment Successful!');
-//         // You can update backend Payment model here if needed
-//       }
-//     }
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10">
-//       <CardElement />
-//       <button 
-//         type="submit" 
-//         disabled={!stripe}
-//         className="mt-6 w-full py-2 px-4 bg-green-600 text-white rounded hover:bg-green-700"
-//       >
-//         Pay ₹{(bookingAmount / 100).toFixed(2)}
-//       </button>
-//     </form>
-//   );
-// };
+// const BACKEND_URL = "https://goturff.onrender.com";
 
 // const PaymentPage = () => {
 //   const { bookingId } = useParams();
-//   const [clientSecret, setClientSecret] = useState('');
-//   const [bookingAmount, setBookingAmount] = useState(0);
+//   const location = useLocation();
+//   const navigate = useNavigate();
+//   const [loading, setLoading] = useState(false);
 
-//   useEffect(() => {
-//     const fetchPaymentIntent = async () => {
-//       const token = localStorage.getItem('token');
+//   // Read query parameters
+//   const queryParams = new URLSearchParams(location.search);
+//   const status = queryParams.get('status');
+
+//   const handleCheckout = async () => {
+//     setLoading(true);
+//     const token = localStorage.getItem('token');
+//     try {
 //       const res = await axios.post(
-//         `http://localhost:5000/api/payments/create-payment-intent/${bookingId}`,
+//         `${BACKEND_URL}/api/payments/create-checkout-session/${bookingId}`,
 //         {},
-//         { headers: { Authorization: `Bearer ${token}` } }
+//         {
+//           headers: { Authorization: `Bearer ${token}` },
+//         }
 //       );
-//       setClientSecret(res.data.clientSecret);
-//       setBookingAmount(res.data.amount);
-//     };
-
-//     fetchPaymentIntent();
-//   }, [bookingId]);
+//       window.location.href = res.data.url; // redirect to Stripe checkout
+//     } catch (error) {
+//       console.error('Payment failed:', error);
+//       alert('Failed to initiate payment');
+//     }
+//     setLoading(false);
+//   };
 
 //   return (
-//     <div className="p-8">
-//       <h1 className="text-2xl font-bold text-center mb-6">Stripe Payment</h1>
-//       {clientSecret && (
-//         <Elements stripe={stripePromise}>
-//           <CheckoutForm clientSecret={clientSecret} bookingAmount={bookingAmount} />
-//         </Elements>
+//     <div className="payment-container">
+//       {status === 'success' ? (
+//         <>
+//           <h1 className="payment-title">Payment Successful!</h1>
+//           <p>Your turf has been booked successfully. 🎉</p>
+//         </>
+//       ) : status === 'cancelled' ? (
+//         <>
+//           <h1 className="payment-title">Payment Cancelled</h1>
+//           <p>Payment was not completed. You can try again later.</p>
+//         </>
+//       ) : (
+//         <>
+//           <h1 className="payment-title">Proceed to Payment</h1>
+//           <button onClick={handleCheckout} className="payment-button" disabled={loading}>
+//             {loading ? 'Redirecting...' : 'Pay Now'}
+//           </button>
+//         </>
 //       )}
 //     </div>
 //   );
 // };
 
-
-
-
 // export default PaymentPage;
+

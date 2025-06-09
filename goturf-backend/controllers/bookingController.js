@@ -83,9 +83,6 @@ exports.updateBookingStatus = async (req, res) => {
   }
 };
 
-
-
-
 exports.getMyApprovedBookings = async (req, res) => {
   try {
     const bookings = await Booking.find({ user: req.user._id, status: 'approved' })
