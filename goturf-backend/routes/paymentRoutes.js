@@ -5,19 +5,21 @@ const verifyUser = require('../middleware/verifyUser');
 const Booking = require('../models/Booking');
 const Payment = require('../models/Payment'); // make sure this is imported
 
-// 🎯 Initiate Payment — Cash / UPI / Card
 router.post('/initiate-payment/:bookingId', verifyUser, async (req, res) => {
   try {
+    console.log("✅ Initiating payment...");
     const { paymentMethod } = req.body;
+    console.log("Payment method:", paymentMethod);
 
     const booking = await Booking.findById(req.params.bookingId).populate('turf');
     if (!booking) {
+      console.log("❌ Booking not found");
       return res.status(404).json({ message: 'Booking not found' });
     }
 
     const amount = booking.turf.price;
+    console.log("Booking found, amount:", amount);
 
-    // 📌 Create a Payment record first
     const payment = new Payment({
       user: req.user.id,
       booking: booking._id,
@@ -27,15 +29,23 @@ router.post('/initiate-payment/:bookingId', verifyUser, async (req, res) => {
     });
 
     await payment.save();
+    console.log("✅ Payment saved:", payment._id);
 
-    // 💵 Cash booking — mark completed immediately
     if (paymentMethod === 'Cash') {
       payment.status = 'completed';
       await payment.save();
+      console.log("✅ Cash booking confirmed");
       return res.json({ message: 'Cash booking confirmed', paymentId: payment._id });
     }
 
-    // 💳 UPI / Card — Stripe Checkout Session
+    // Stripe checkout session
+    const frontendUrl = process.env.FRONTEND_URL.replace(/\/$/, '');
+    const successUrl = `${frontendUrl}/payment/${booking._id}?status=success`;
+    const cancelUrl = `${frontendUrl}/payment/${booking._id}?status=cancelled`;
+
+    console.log("Success URL:", successUrl);
+    console.log("Cancel URL:", cancelUrl);
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card', 'upi'],
       line_items: [
@@ -45,16 +55,16 @@ router.post('/initiate-payment/:bookingId', verifyUser, async (req, res) => {
             product_data: {
               name: `Turf Booking - ${booking.turf.name}`,
               description: booking.turf.description,
-              images: [booking.turf.photo], // optional: if you have valid hosted image URL
+              images: [booking.turf.photo],
             },
-            unit_amount: amount * 100, // paise
+            unit_amount: amount * 100,
           },
           quantity: 1,
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.FRONTEND_URL}/payment/${booking._id}?status=success`,
-      cancel_url: `${process.env.FRONTEND_URL}/payment/${booking._id}?status=cancelled`,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
       metadata: {
         bookingId: booking._id.toString(),
         userId: req.user.id,
@@ -62,12 +72,15 @@ router.post('/initiate-payment/:bookingId', verifyUser, async (req, res) => {
       },
     });
 
+    console.log("✅ Stripe session created:", session.url);
     res.json({ url: session.url });
+
   } catch (error) {
-    console.error('Payment initiation failed:', error);
+    console.error('❌ Payment initiation failed:', error);
     res.status(500).json({ message: 'Internal Server Error', error: error.message });
   }
 });
+
 
 // 🎯 Direct Checkout Session (if needed separately)
 router.post('/create-checkout-session/:bookingId', verifyUser, async (req, res) => {
